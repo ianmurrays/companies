@@ -38,7 +38,7 @@ div(ng-cloak)
         td {{director.id}}
         td {{director.name}}
         td
-          a(ng-href="#/companies/{{company.id}}/directors/{{director.id}}/passport") Passport PDF
+          a(ng-href="/api/companies/{{company.id}}/directors/{{director.id}}/passport", target="_blank") Passport PDF
           &nbsp;|&nbsp;
           a(ng-href="#/companies/{{company.id}}/directors/{{director.id}}/edit") Edit
           &nbsp;|&nbsp;

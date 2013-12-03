@@ -55,13 +55,31 @@ angular.module('app.controllers', [])
       $location.path("#/companies/#{company.id}")
 ])
 
-.controller('NewDirectorCtrl', ['$scope', '$routeParams', '$location', 'Restangular', 'company', ($scope, $routeParams, $location, Restangular, company) ->
+.controller('NewDirectorCtrl', ['$scope', '$routeParams', '$location', '$upload', 'Restangular', 'company', ($scope, $routeParams, $location, $upload, Restangular, company) ->
   $scope.company = company
   $scope.director = {}
 
   $scope.save = ->
     Restangular.one('companies', company.id).all('directors').post($scope.director).then ->
       $location.path("#/companies/#{company.id}")
+
+  $scope.passportSelected = ($files) ->
+    $scope.saving = true
+
+    # Just select the first one
+    passport = $files[0] 
+    $upload.upload({
+      url: "/api/companies/#{company.id}/directors/upload"
+      file: passport
+      method: "POST"
+      fileFormDataName: 'passport'
+    })
+    .progress (evt) ->
+      console.log 'percent: ' + parseInt(100.0 * evt.loaded / evt.total)
+    .success (data) ->
+      # Get the cache id and set it to the director
+      $scope.director.passport_cache = data.passport_cache
+      $scope.saving = false
 ])
 
 .controller('EditDirectorCtrl', ['$scope', '$routeParams', '$location', 'Restangular', 'company', 'director', ($scope, $routeParams, $location, Restangular, company, director) ->

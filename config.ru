@@ -16,3 +16,11 @@ map "/" do
   
   run lambda {|*|}
 end
+
+map "/uploads" do
+  use Rack::Static,
+    :urls => [""],
+    :root => File.join('public', 'uploads')
+  
+  run lambda {|*|}
+end

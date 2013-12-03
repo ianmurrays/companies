@@ -4,5 +4,9 @@ div(ng-cloak)
       label.control-label Director Name
       div.controls
         input(type="text", name="name", ng-model="director.name", required)
+    div.control-group
+      label.control-label Passport PDF
+      div.controls
+        input(type="file", name="name", ng-file-select="passportSelected($files)")
     div.form-actions
       button(type="submit", class="btn btn-primary", ng-disabled="saving") Save
