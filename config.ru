@@ -7,3 +7,12 @@ require './config/application'
 map "/api" do 
   run Application
 end
+
+map "/" do
+  use Rack::Static, 
+    :urls => ["/images", "/js", "/css"],
+    :root => File.join('frontend', '_public'), 
+    :index => 'index.html'
+  
+  run lambda {|*|}
+end
