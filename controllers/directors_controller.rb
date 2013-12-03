@@ -12,6 +12,15 @@ class Application < Sinatra::Base
   # Routes
   #
 
+  get '/companies/:company_id/directors/:id' do |company_id, id|
+    director_params = clean_director(@request_payload)
+    company = find_company(company_id)
+    director = company.directors.find_by_id(id)
+
+    halt 404 unless director
+    director.json_representation
+  end
+
   post '/companies/:company_id/directors' do |company_id|
     director_params = clean_director(@request_payload)
     company = find_company(company_id)

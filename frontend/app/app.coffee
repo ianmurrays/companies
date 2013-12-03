@@ -43,6 +43,27 @@ App.config([
         ]
     })
 
+    .when('/companies/:company_id/directors/new', {
+      templateUrl: '/partials/edit_director.html'
+      controller: 'NewDirectorCtrl'
+      resolve:
+        company: ["Restangular", "$route", (Restangular, $route) -> 
+          Restangular.one('companies', $route.current.params.company_id).get()
+        ]
+    })
+
+    .when('/companies/:company_id/directors/:id/edit', {
+      templateUrl: '/partials/edit_director.html'
+      controller: 'EditDirectorCtrl'
+      resolve:
+        company: ["Restangular", "$route", (Restangular, $route) -> 
+          Restangular.one('companies', $route.current.params.company_id).get()
+        ]
+        director: ["Restangular", "$route", (Restangular, $route) -> 
+          Restangular.one('companies', $route.current.params.company_id).one('directors', $route.current.params.id).get()
+        ]
+    })
+
     .when('/companies/:id/edit', {
       templateUrl: '/partials/edit_company.html'
       controller: 'EditCompanyCtrl'

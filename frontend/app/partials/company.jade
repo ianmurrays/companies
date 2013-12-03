@@ -40,5 +40,9 @@ div(ng-cloak)
         td
           a(ng-href="#/companies/{{company.id}}/directors/{{director.id}}/passport") Passport PDF
           &nbsp;|&nbsp;
+          a(ng-href="#/companies/{{company.id}}/directors/{{director.id}}/edit") Edit
+          &nbsp;|&nbsp;
           a(href="javascript:;", ng-click="deleteDirector(director)", class="text-error") Delete
+
+  a(ng-href="#/companies/{{company.id}}/directors/new", class="btn btn-success") New Director
 

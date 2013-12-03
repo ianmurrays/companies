@@ -12,26 +12,6 @@ angular.module('app.controllers', [])
 
 ($scope, $location, $resource, $rootScope) ->
 
-  # Uses the url to determine if the selected
-  # menu item should have the class active.
-  $scope.$location = $location
-  $scope.$watch('$location.path()', (path) ->
-    $scope.activeNavId = path || '/'
-  )
-
-  # getClass compares the current url with the id.
-  # If the current url starts with the id it returns 'active'
-  # otherwise it will return '' an empty string. E.g.
-  #
-  #   # current url = '/products/1'
-  #   getClass('/products') # returns 'active'
-  #   getClass('/orders') # returns ''
-  #
-  $scope.getClass = (id) ->
-    if $scope.activeNavId.substring(0, id.length) == id
-      return 'active'
-    else
-      return ''
 ])
 
 # Companies Controller
@@ -40,14 +20,22 @@ angular.module('app.controllers', [])
 ])
 
 # Company Controller
-.controller('CompanyCtrl', ['$scope', '$routeParams', 'Restangular', 'company', ($scope, $routeParams, Restangular, company) ->
+.controller('CompanyCtrl', ['$scope', '$routeParams', '$location', 'Restangular', 'company', ($scope, $routeParams, $location, Restangular, company) ->
   $scope.company = company
+
+  $scope.deleteCompany = ->
+    if confirm('Sure?')
+      $scope.company.remove().then -> $location.path('#/')
+
+  $scope.deleteDirector = (director) ->
+    if confirm('Sure?')
+      Restangular.one('companies', $scope.company.id).one('directors', director.id).remove().then -> $location.path("#/companies/#{$scope.company.id}")
 ])
 
 # Company Controller
 .controller('NewCompanyCtrl', ['$scope', '$routeParams', '$location', 'Restangular', ($scope, $routeParams, $location, Restangular) ->
   $scope.company = {}
-  
+
   $scope.save = ->
     # Disable the save button
     $scope.saving = true
@@ -67,3 +55,20 @@ angular.module('app.controllers', [])
       $location.path("#/companies/#{company.id}")
 ])
 
+.controller('NewDirectorCtrl', ['$scope', '$routeParams', '$location', 'Restangular', 'company', ($scope, $routeParams, $location, Restangular, company) ->
+  $scope.company = company
+  $scope.director = {}
+
+  $scope.save = ->
+    Restangular.one('companies', company.id).all('directors').post($scope.director).then ->
+      $location.path("#/companies/#{company.id}")
+])
+
+.controller('EditDirectorCtrl', ['$scope', '$routeParams', '$location', 'Restangular', 'company', 'director', ($scope, $routeParams, $location, Restangular, company, director) ->
+  $scope.company = company
+  $scope.director = director
+
+  $scope.save = ->
+    $scope.director.put().then ->
+      $location.path("#/companies/#{company.id}")
+])
