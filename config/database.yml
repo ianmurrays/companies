@@ -1,0 +1,29 @@
+development:
+  adapter: mysql2
+  database: companies_development
+  host: localhost
+  username: root
+  password: root
+  encoding: utf8
+  pool: 5
+  timeout: 5000
+
+test:
+  adapter: mysql2
+  database: companies_test
+  host: localhost
+  username: companies
+  password: companiesproduction
+  encoding: utf8
+  pool: 5
+  timeout: 5000
+
+production:
+  adapter: mysql2
+  database: companies_production
+  host: localhost
+  username: companies
+  password: companiesproduction
+  encoding: utf8
+  pool: 5
+  timeout: 5000
