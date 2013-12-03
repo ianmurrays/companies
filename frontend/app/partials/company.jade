@@ -1,0 +1,44 @@
+div(ng-cloak)
+  h2 {{company.name}}
+
+  table.table
+    tbody
+      tr
+        th(width=100) Address
+        td {{company.address}}
+      tr
+        th City
+        td {{company.city}}
+      tr
+        th Country
+        td {{company.country}}
+      tr
+        th Email
+        td 
+          a(ng-href="mailto:{{company.email}}") {{company.email}}
+      tr
+        th Phone
+        td {{company.phone}}
+      tr
+        th Options
+        td
+          a(ng-href="#/companies/{{company.id}}/edit") Edit
+          &nbsp;|&nbsp;
+          a(href="javascript:;", ng-click="deleteCompany(company)", class="text-error") Delete
+
+  h2 Directors
+  table.table
+    thead
+      tr
+        th(width=100) ID
+        th Name
+        th(width=200) Options
+    tbody
+      tr(ng-repeat="director in company.directors")
+        td {{director.id}}
+        td {{director.name}}
+        td
+          a(ng-href="#/companies/{{company.id}}/directors/{{director.id}}/passport") Passport PDF
+          &nbsp;|&nbsp;
+          a(href="javascript:;", ng-click="deleteDirector(director)", class="text-error") Delete
+

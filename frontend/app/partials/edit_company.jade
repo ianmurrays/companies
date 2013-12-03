@@ -1,0 +1,28 @@
+div(ng-cloak)
+  form.form-horizontal(ng-submit="save()")
+    div.control-group
+      label.control-label Name
+      div.controls
+        input(type="text", name="name", ng-model="company.name", required)
+    div.control-group
+      label.control-label Address
+      div.controls
+        input(type="text", ng-model="company.address", required)
+    div.control-group
+      label.control-label City
+      div.controls
+        input(type="text", ng-model="company.city", required)
+    div.control-group
+      label.control-label Country
+      div.controls
+        input(type="text", ng-model="company.country", required)
+    div.control-group
+      label.control-label Email
+      div.controls
+        input(type="email", ng-model="company.email")
+    div.control-group
+      label.control-label Name
+      div.controls
+        input(type="text", ng-model="company.phone")
+    div.form-actions
+      button(type="submit", class="btn btn-primary", ng-disabled="saving") Save

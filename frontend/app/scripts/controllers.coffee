@@ -34,52 +34,36 @@ angular.module('app.controllers', [])
       return ''
 ])
 
-.controller('MyCtrl1', [
-  '$scope'
-
-($scope) ->
-  $scope.onePlusOne = 2
+# Companies Controller
+.controller('CompaniesCtrl', ['$scope', 'Restangular', ($scope, Restangular) ->
+  $scope.companies = Restangular.all('companies').getList()
 ])
 
-.controller('MyCtrl2', [
-  '$scope'
-
-($scope) ->
-  $scope
+# Company Controller
+.controller('CompanyCtrl', ['$scope', '$routeParams', 'Restangular', 'company', ($scope, $routeParams, Restangular, company) ->
+  $scope.company = company
 ])
 
-.controller('TodoCtrl', [
-  '$scope'
+# Company Controller
+.controller('NewCompanyCtrl', ['$scope', '$routeParams', '$location', 'Restangular', ($scope, $routeParams, $location, Restangular) ->
+  $scope.company = {}
+  
+  $scope.save = ->
+    # Disable the save button
+    $scope.saving = true
+    Restangular.all('companies').post($scope.company).then (company) -> 
+      $location.path("#/companies/#{company.id}")
+])
 
-($scope) ->
+# Edit Company Controller
+.controller('EditCompanyCtrl', ['$scope', '$routeParams', '$location', 'Restangular', 'company', ($scope, $routeParams, $location, Restangular, company) ->
+  $scope.company = company
 
-  $scope.todos = [
-    text: "learn angular"
-    done: true
-  ,
-    text: "build an angular app"
-    done: false
-  ]
-
-  $scope.addTodo = ->
-    $scope.todos.push
-      text: $scope.todoText
-      done: false
-
-    $scope.todoText = ""
-
-  $scope.remaining = ->
-    count = 0
-    angular.forEach $scope.todos, (todo) ->
-      count += (if todo.done then 0 else 1)
-
-    count
-
-  $scope.archive = ->
-    oldTodos = $scope.todos
-    $scope.todos = []
-    angular.forEach oldTodos, (todo) ->
-      $scope.todos.push todo  unless todo.done
-
+  $scope.save = -> 
+    # Disable the save button
+    $scope.saving = true
+    console.log $scope.company
+    $scope.company.put().then (company) -> 
+      $location.path("#/companies/#{company.id}")
 ])
 

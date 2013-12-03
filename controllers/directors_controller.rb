@@ -1,7 +1,7 @@
 class Application < Sinatra::Base
-  def clean_params(unsafe_params)
+  def clean_director(unsafe_params)
     # Remove dangerous parameters, keep only the ones we want
-    safe_params = unsafe_params.keep_if do |key, value|
+    safe_params = unsafe_params.select do |key, value|
       %w{name}.include? key.to_s
     end
 
@@ -13,7 +13,7 @@ class Application < Sinatra::Base
   #
 
   post '/companies/:company_id/directors' do |company_id|
-    director_params = clean_params(params[:director])
+    director_params = clean_director(@request_payload)
     company = find_company(company_id)
 
     director = company.directors.build director_params
@@ -27,7 +27,7 @@ class Application < Sinatra::Base
   end
 
   put '/companies/:company_id/directors/:id' do |company_id, id|
-    director_params = clean_params(params[:director])
+    director_params = clean_director(@request_payload)
     company = find_company(company_id)
     director = company.directors.find_by_id(id)
 

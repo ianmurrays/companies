@@ -10,6 +10,14 @@ ActiveRecord::Base.establish_connection(config)
 class Application < Sinatra::Base
   before do
     content_type 'application/json'
+
+    # Client should post raw JSON
+    begin
+      request.body.rewind
+      @request_payload = JSON.parse request.body.read
+    rescue JSON::ParserError
+      @request_payload = {}
+    end
   end
 
   # Finds a company or renders a 404

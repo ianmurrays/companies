@@ -1,0 +1,13 @@
+div(ng-cloak)
+  table.table.table-bordered
+    thead
+      tr
+        th(width=100) Company ID
+        th Name
+    tbody
+      tr(ng-repeat="company in companies")
+        td {{company.id}}
+        td 
+          a(ng-href="#/companies/{{company.id}}") {{company.name}}
+
+  a(class="btn btn-success", ng-href="#/companies/new") New Company

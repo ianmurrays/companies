@@ -1,7 +1,7 @@
 class Application < Sinatra::Base
-  def clean_params(unsafe_params)
+  def clean_company(unsafe_params)
     # Remove dangerous parameters, keep only the ones we want
-    safe_params = unsafe_params.keep_if do |key, value|
+    safe_params = unsafe_params.select do |key, value|
       %w{name address city country email phone}.include? key.to_s
     end
 
@@ -27,7 +27,7 @@ class Application < Sinatra::Base
   end
 
   post '/companies' do
-    company = Company.new clean_params(params[:company])
+    company = Company.new clean_company(@request_payload)
 
     if company.save
       company.json_representation
@@ -39,7 +39,7 @@ class Application < Sinatra::Base
   put '/companies/:id' do |company_id|
     company = find_company(company_id)
 
-    if company.update_attributes clean_params(params[:company])
+    if company.update_attributes clean_company(@request_payload)
       company.json_representation
     else
       render_errors(company)
